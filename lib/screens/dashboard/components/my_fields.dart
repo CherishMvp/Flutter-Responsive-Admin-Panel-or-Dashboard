@@ -37,6 +37,7 @@ class MyFiles extends StatelessWidget {
           ],
         ),
         SizedBox(height: defaultPadding),
+        // 主要的响应式布局内容。没用插件 相当于每个设备的宽度都要自己去配置
         Responsive(
           mobile: FileInfoCardGridView(
             crossAxisCount: _size.width < 650 ? 2 : 4,
@@ -56,7 +57,7 @@ class FileInfoCardGridView extends StatelessWidget {
   const FileInfoCardGridView({
     Key? key,
     this.crossAxisCount = 4,
-    this.childAspectRatio = 1,
+    this.childAspectRatio = 1, //item的宽高比
   }) : super(key: key);
 
   final int crossAxisCount;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+/// 宽屏设备时的左侧菜单组件
 class SideMenu extends StatelessWidget {
   const SideMenu({
     Key? key,

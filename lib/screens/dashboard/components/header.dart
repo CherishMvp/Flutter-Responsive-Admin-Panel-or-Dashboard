@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../../../constants.dart';
 
 class Header extends StatelessWidget {
+  /// 根据不同设备处理drawer的开关
   const Header({
     Key? key,
   }) : super(key: key);
@@ -16,9 +17,19 @@ class Header extends StatelessWidget {
     return Row(
       children: [
         if (!Responsive.isDesktop(context))
-          IconButton(
-            icon: Icon(Icons.menu),
-            onPressed: context.read<MenuAppController>().controlMenu,
+          GestureDetector(
+            //带点击事件的组件（没有水波纹debuff）
+            onTap: () => context.read<MenuAppController>().controlMenu(),
+            child: Container(
+              padding: EdgeInsets.fromLTRB(0, defaultPadding * 0.75,
+                  defaultPadding * 0.75, defaultPadding * 0.75),
+              margin: EdgeInsets.only(right: defaultPadding / 2),
+              decoration: BoxDecoration(
+                color: Colors.transparent,
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
+              ),
+              child: SvgPicture.asset("assets/icons/Search.svg"),
+            ),
           ),
         if (!Responsive.isMobile(context))
           Text(
@@ -45,7 +56,7 @@ class ProfileCard extends StatelessWidget {
       margin: EdgeInsets.only(left: defaultPadding),
       padding: EdgeInsets.symmetric(
         horizontal: defaultPadding,
-        vertical: defaultPadding / 2,
+        vertical: defaultPadding / 4,
       ),
       decoration: BoxDecoration(
         color: secondaryColor,
@@ -84,10 +95,11 @@ class SearchField extends StatelessWidget {
         fillColor: secondaryColor,
         filled: true,
         border: OutlineInputBorder(
-          borderSide: BorderSide.none,
+          borderSide: BorderSide.none, //一定去除border
           borderRadius: const BorderRadius.all(Radius.circular(10)),
         ),
         suffixIcon: InkWell(
+          //带点击事件的组件（没有水波纹debuff）
           onTap: () {},
           child: Container(
             padding: EdgeInsets.all(defaultPadding * 0.75),

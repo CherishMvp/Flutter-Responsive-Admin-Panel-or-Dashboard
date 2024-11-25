@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// 相当于css中的媒体查询，自定义预定设备尺寸限制
 class Responsive extends StatelessWidget {
   final Widget mobile;
   final Widget? tablet;

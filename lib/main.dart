@@ -1,11 +1,31 @@
+import 'dart:io';
+
 import 'package:admin/constants.dart';
 import 'package:admin/controllers/menu_app_controller.dart';
 import 'package:admin/screens/main/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:window_manager/window_manager.dart';
 
-void main() {
+void main() async {
+  if (Platform.isWindows) {
+    WidgetsFlutterBinding.ensureInitialized();
+    // Must add this line.
+    await windowManager.ensureInitialized();
+
+    WindowOptions windowOptions = WindowOptions(
+      minimumSize: Size(390, 600),
+      center: true,
+      backgroundColor: Colors.transparent,
+      skipTaskbar: false,
+      titleBarStyle: TitleBarStyle.normal,
+    );
+    windowManager.waitUntilReadyToShow(windowOptions, () async {
+      await windowManager.show();
+      await windowManager.focus();
+    });
+  }
   runApp(MyApp());
 }
 

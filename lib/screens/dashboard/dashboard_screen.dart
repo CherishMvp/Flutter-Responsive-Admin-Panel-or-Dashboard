@@ -19,6 +19,9 @@ class DashboardScreen extends StatelessWidget {
           children: [
             Header(),
             SizedBox(height: defaultPadding),
+            // 主要面板内容
+            // DESC 如果是宽屏幕设备：那就是row左右布局，左侧5/7 ，右侧2/7 中间加上一个defaultPadding.
+            //      如果是移动设备：那就是只有左侧的5/7 变成了flex:1独占一行。然后子内容column依次布局。最终加上右侧的2/7在宽屏幕应该显示的内容拼接上
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
