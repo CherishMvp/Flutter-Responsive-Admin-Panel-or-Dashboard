@@ -69,9 +69,16 @@ DataRow recentFileDataRow(RecentFile fileInfo) {
               height: 30,
               width: 30,
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
-              child: Text(fileInfo.title!),
+            ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: 150),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
+                child: Text(
+                  fileInfo.title!,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
             ),
           ],
         ),

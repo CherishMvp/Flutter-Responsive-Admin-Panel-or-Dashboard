@@ -1,6 +1,8 @@
+import 'package:com.cherish.admin/main.dart';
 import 'package:com.cherish.admin/models/my_files.dart';
 import 'package:com.cherish.admin/responsive.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../constants.dart';
 import 'file_info_card.dart';
@@ -30,7 +32,7 @@ class MyFiles extends StatelessWidget {
                       defaultPadding / (Responsive.isMobile(context) ? 2 : 1),
                 ),
               ),
-              onPressed: () {},
+              onPressed: () => context.push('/db_test'),
               icon: Icon(Icons.add),
               label: Text("Add New"),
             ),
