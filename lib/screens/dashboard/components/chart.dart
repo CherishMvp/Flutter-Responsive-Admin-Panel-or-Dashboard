@@ -35,6 +35,7 @@ class Chart extends StatelessWidget {
                         height: 0.5,
                       ),
                 ),
+                SizedBox(height: defaultPadding / 2),
                 Text("of 128GB")
               ],
             ),
@@ -45,6 +46,7 @@ class Chart extends StatelessWidget {
   }
 }
 
+/// 每一段的数据
 List<PieChartSectionData> paiChartSelectionData = [
   PieChartSectionData(
     color: primaryColor,

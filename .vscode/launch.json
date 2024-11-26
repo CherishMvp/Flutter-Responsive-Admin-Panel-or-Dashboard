@@ -10,6 +10,24 @@
             "type": "dart"
         },
         {
+            "name": "android",
+            "request": "launch",
+            "deviceId": "127.0.0.1:16384",
+            "type": "dart"
+        },
+        {
+            "name": "chrome",
+            "request": "launch",
+            "deviceId": "chrome",
+            "type": "dart"
+        },
+        {
+            "name": "windows",
+            "request": "launch",
+            "deviceId": "windows",
+            "type": "dart"
+        },
+        {
             "name": "Flutter-Responsive-Admin-Panel-or-Dashboard (profile mode)",
             "request": "launch",
             "type": "dart",

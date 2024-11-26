@@ -1,4 +1,4 @@
-import 'package:admin/models/recent_file.dart';
+import 'package:com.cherish.admin/models/recent_file.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -27,23 +27,28 @@ class RecentFiles extends StatelessWidget {
           ),
           SizedBox(
             width: double.infinity,
-            child: DataTable(
-              columnSpacing: defaultPadding,
-              // minWidth: 600,
-              columns: [
-                DataColumn(
-                  label: Text("File Name"),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: DataTable(
+                columnSpacing: defaultPadding,
+                horizontalMargin: 0,
+                // minWidth: 600,
+                columns: [
+                  DataColumn(
+                    label: Text("File Name"),
+                    tooltip: "File Name",
+                  ),
+                  DataColumn(
+                    label: Text("Date"),
+                  ),
+                  DataColumn(
+                    label: Text("Size"),
+                  ),
+                ],
+                rows: List.generate(
+                  demoRecentFiles.length,
+                  (index) => recentFileDataRow(demoRecentFiles[index]),
                 ),
-                DataColumn(
-                  label: Text("Date"),
-                ),
-                DataColumn(
-                  label: Text("Size"),
-                ),
-              ],
-              rows: List.generate(
-                demoRecentFiles.length,
-                (index) => recentFileDataRow(demoRecentFiles[index]),
               ),
             ),
           ),
