@@ -1,11 +1,15 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:com.cherish.admin/constants.dart';
 import 'package:com.cherish.admin/controllers/fridge_controller.dart';
 import 'package:com.cherish.admin/controllers/menu_app_controller.dart';
 import 'package:com.cherish.admin/screens/main/main_screen.dart';
+import 'package:com.cherish.admin/test/food/category_food_detail.dart';
 import 'package:com.cherish.admin/test/food/food_page.dart';
+import 'package:com.cherish.admin/test/fridge/category_page.dart';
 import 'package:com.cherish.admin/test/fridge/fridge_page.dart';
+import 'package:com.cherish.admin/test/index/test_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -74,19 +78,38 @@ final GoRouter _router = GoRouter(
       },
       routes: [
         GoRoute(
+          path: '/test_page',
+          builder: (context, state) {
+            return const TestPage();
+          },
+        ),
+        GoRoute(
           path: '/fridge_page',
           builder: (context, state) {
             return const FridgeTestPage();
           },
         ),
-        // food
+        GoRoute(
+          path: '/category_page',
+          builder: (context, state) {
+            return const CategoryPage();
+          },
+        ),
         GoRoute(
             path: '/food_page',
             builder: (context, state) {
               // 传入fid
               final fid = state.extra as String;
               return FoodPage(fridge_id: fid);
-            })
+            }),
+        GoRoute(
+            path: '/category_detail/:category_id',
+            builder: (context, state) {
+              // 传入fid
+              final fid = state.pathParameters['category_id'] ?? '1';
+              log("fid: $fid");
+              return CategoryPageDetail(category_id: fid);
+            }),
       ],
     ),
   ],

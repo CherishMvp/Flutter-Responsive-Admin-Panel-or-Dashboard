@@ -10,9 +10,19 @@ class FridgeProvider with ChangeNotifier {
 
   List<Fridge> get fridges => _fridges;
 
-  // 当前冰箱的食材列表
+  /// 指定冰箱的食材列表
   List<FoodItem> getFridgeFoods(String fridgeId) =>
       _fridges.firstWhere((fridge) => fridge.id == fridgeId).foodItems ?? [];
+
+  /// 指定分类下的食材列表
+  List<FoodItem> getFoodCategoryFoods(String categoryId) =>
+      _foodCategory
+          .firstWhere((category) => category.id == categoryId)
+          .foodItems ??
+      [];
+  List<FoodCategory> _foodCategory = [];
+
+  List<FoodCategory> get foodCategory => _foodCategory;
 
   FridgeProvider() {
     log("provider初始化");
@@ -23,6 +33,7 @@ class FridgeProvider with ChangeNotifier {
   Future<void> init() async {
     log("init初始化");
     await loadFridges(); // 加载所有冰箱和食材数据
+    await getFoodCategories();
     print("FridgeProvider initialized");
   }
 
@@ -30,6 +41,7 @@ class FridgeProvider with ChangeNotifier {
   Future<void> loadFridges() async {
     log("provider加载冰箱和食材数据");
     _fridges = await DatabaseHelper.getFridges();
+    _foodCategory = await DatabaseHelper.getFoodCategoriesWithFoods();
     notifyListeners();
   }
 
@@ -82,6 +94,39 @@ class FridgeProvider with ChangeNotifier {
   // 删除食材
   Future<int> deleteFoodItem(String foodItemId) async {
     int result = await DatabaseHelper.deleteFoodItem(foodItemId);
+    await loadFridges(); // 更新列表
+    return result;
+  }
+
+  // #endregion
+
+  // #region food category
+
+// 获取所有分类信息
+  Future<void> getFoodCategories() async {
+    _foodCategory = await DatabaseHelper.getFoodCategoriesWithFoods();
+    await loadFridges(); // 更新列表
+  }
+
+  // 添加食材类别
+  Future<int> addFoodCategory(FoodCategory category) async {
+    log("category:$category");
+    int result = await DatabaseHelper.addFoodCategory(category);
+    await loadFridges(); // 更新列表
+
+    return result;
+  }
+
+  // 删除食材类别
+  Future<int> deleteFoodCategory(String categoryId) async {
+    int result = await DatabaseHelper.deleteFoodCategory(categoryId);
+    await loadFridges(); // 更新列表
+    return result;
+  }
+
+  // 更新食材类别
+  Future<int> updateFoodCategory(FoodCategory newCategory) async {
+    int result = await DatabaseHelper.updateFoodCategory(newCategory);
     await loadFridges(); // 更新列表
     return result;
   }

@@ -29,6 +29,13 @@ class FoodItem {
   /// 关联的冰箱ID
   String? fridgeId;
 
+  /// 食材分类ID
+  String? categoryId;
+
+  /// 创建时间
+  final DateTime createdAt;
+  final DateTime? updatedAt;
+
   FoodItem({
     String? id,
     required this.name,
@@ -39,7 +46,12 @@ class FoodItem {
     required this.storageLocation,
     this.isExpired = false,
     this.fridgeId = '1',
-  }) : id = id ?? Uuid().v1();
+    this.categoryId = '1',
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  })  : id = id ?? Uuid().v1(),
+        createdAt = createdAt ?? DateTime.now(),
+        updatedAt = DateTime.now();
 
   //  copyWith
   FoodItem copyWith({
@@ -52,10 +64,14 @@ class FoodItem {
     String? storageLocation,
     bool? isExpired,
     String? fridgeId,
+    String? categoryId,
+    DateTime? createdAt,
+    DateTime? updatedAt,
   }) {
     return FoodItem(
       id: id ?? this.id,
       fridgeId: fridgeId ?? this.fridgeId,
+      categoryId: categoryId ?? this.categoryId,
       name: name ?? this.name,
       category: category ?? this.category,
       quantity: quantity ?? this.quantity,
@@ -63,6 +79,8 @@ class FoodItem {
       expiryDate: expiryDate ?? this.expiryDate,
       storageLocation: storageLocation ?? this.storageLocation,
       isExpired: isExpired ?? this.isExpired,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
     );
   }
 
@@ -81,6 +99,7 @@ class FoodItem {
     return FoodItem(
       id: json['id'],
       fridgeId: json['fridge_id'],
+      categoryId: json['category_id'],
       name: json['name'],
       category: json['category'],
       quantity: json['quantity'],
@@ -88,6 +107,10 @@ class FoodItem {
       expiryDate: DateTime.parse(json['expiryDate']),
       storageLocation: json['storageLocation'],
       isExpired: json['isExpired'] == 1, // SQLite 中布尔值转换
+      // 转换时间格式
+      createdAt: DateTime.parse(json['createdAt']),
+      updatedAt:
+          json['updatedAt'] != null ? DateTime.parse(json['updatedAt']) : null,
     );
   }
 
@@ -96,6 +119,7 @@ class FoodItem {
     return {
       'id': id,
       'fridge_id': fridgeId,
+      'category_id': categoryId,
       'name': name,
       'category': category,
       'quantity': quantity,
@@ -103,15 +127,21 @@ class FoodItem {
       'expiryDate': expiryDate.toIso8601String(),
       'storageLocation': storageLocation,
       'isExpired': isExpired ? 1 : 0,
+      'createdAt': createdAt.toIso8601String(),
+      'updatedAt': updatedAt?.toIso8601String(),
     };
   }
 }
 
-/// 食材类别
+/// 食材类别。分类暂时不考虑与食材进行联表。用户自己创建分类
 class FoodCategory {
   final String id;
   final String name;
   final String icon;
+  List<FoodItem>? foodItems;
+
+  /// 是否默认
+  bool isDefault = false;
   final DateTime createdAt;
   final DateTime? updatedAt;
 
@@ -121,8 +151,11 @@ class FoodCategory {
     String? id,
     DateTime? createdAt,
     DateTime? updatedAt,
+    List<FoodItem>? foodItems,
+    this.isDefault = false,
   })  : id = id ?? Uuid().v1(),
         createdAt = createdAt ?? DateTime.now(),
+        foodItems = foodItems ?? [],
         updatedAt = DateTime.now();
 
   ///copyWith 方法是为了方便创建一个新的 FoodCategory 对象，并且只更新指定的字段
@@ -139,6 +172,8 @@ class FoodCategory {
       icon: icon ?? this.icon,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? createdAt,
+      isDefault: isDefault,
+      foodItems: foodItems,
     );
   }
 
@@ -147,16 +182,21 @@ class FoodCategory {
       'id': id,
       'name': name,
       'icon': icon,
+      'isDefault': isDefault ? 1 : 0,
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt?.toIso8601String(),
     };
   }
 
-  factory FoodCategory.fromJson(Map<String, dynamic> json) {
+  factory FoodCategory.fromJson(Map<String, dynamic> json,
+      [List<FoodItem>? foodItemList]) {
+    print("foodItems: $foodItemList");
     return FoodCategory(
       id: json['id'],
       name: json['name'],
+      foodItems: foodItemList,
       icon: json['icon'],
+      isDefault: json['isDefault'] == 1,
       createdAt: DateTime.parse(json['createdAt']),
       updatedAt:
           json['updatedAt'] != null ? DateTime.parse(json['updatedAt']) : null,

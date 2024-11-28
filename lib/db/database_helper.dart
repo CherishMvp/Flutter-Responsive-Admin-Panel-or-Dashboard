@@ -10,7 +10,7 @@ import 'package:path/path.dart';
 
 class DatabaseHelper {
   static Database? _database;
-  static final dbVersion = 3;
+  static final dbVersion = 6;
   // 获取数据库实例
   // 获取数据库实例
   static Future<Database> getDatabase() async {
@@ -32,7 +32,9 @@ class DatabaseHelper {
         await db.execute(
             ''' CREATE TABLE fridges( id TEXT PRIMARY KEY, name TEXT, isDefault INTEGER, createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, updatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ) ''');
         await db.execute(
-            ''' CREATE TABLE food_items( id TEXT PRIMARY KEY, fridge_id TEXT, name TEXT, category TEXT, quantity INTEGER, purchaseDate TEXT, expiryDate TEXT, storageLocation TEXT, isExpired INTEGER, createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, updatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY(fridge_id) REFERENCES fridges(id) ) ''');
+            ''' CREATE TABLE food_items( id TEXT PRIMARY KEY, fridge_id TEXT, category_id TEXT, name TEXT, category TEXT,category_id TEXT DEFAULT '1', quantity INTEGER, purchaseDate TEXT, expiryDate TEXT, storageLocation TEXT, isExpired INTEGER, createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, updatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY(fridge_id) REFERENCES fridges(id) ) ''');
+        await db.execute(
+            ''' CREATE TABLE food_categories( id TEXT PRIMARY KEY, name TEXT, icon TEXT, isDefault INTEGER, createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, updatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ) ''');
         await db.execute(
             ''' CREATE TABLE shopping_lists( id TEXT PRIMARY KEY, name TEXT, createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, updatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ) ''');
         await db.execute(
@@ -54,6 +56,8 @@ class DatabaseHelper {
   static _handleDBUpgrade(Database db, int oldVersion, int newVersion) async {
     if (newVersion > oldVersion) {
       print("数据库升级，准备更新数据");
+      await db.execute(
+          ''' ALTER TABLE food_items ADD COLUMN category_id TEXT DEFAULT '1' ''');
     }
   }
 
@@ -61,23 +65,42 @@ class DatabaseHelper {
 
 // mock数据
 
-// 初始化默认一个冰箱表
+// 初始化默认一个冰箱信息和分类信息
   static initFridge() async {
-    final cache = CacheHelper();
-    if (await cache.isDBInit()) return;
+    try {
+      final cache = CacheHelper();
 
-    final defaultFridge = Fridge(
-      id: '1',
-      name: '默认冰箱',
-      foodItems: [],
-      isDefault: true,
-      createdAt: DateTime.now(),
-    );
-    int result = await saveFridge(defaultFridge);
-    log("默认数据插入情况:$result");
-    // 存储默认情况
+      if (await cache.isDBInit()) return;
 
-    await cache.setDBInit(true);
+      /// 创建默认冰箱
+      final defaultFridge = Fridge(
+        id: '1',
+        name: '默认冰箱',
+        foodItems: [],
+        isDefault: true,
+        createdAt: DateTime.now(),
+      );
+      int result = await saveFridge(defaultFridge);
+      log("默认数据插入情况:$result");
+
+      /// 创建默认分类
+      final defaultCategory = FoodCategory(
+        id: '1',
+        isDefault: true,
+        name: '默认分类',
+        icon: 'default',
+      );
+      int result2 = await addFoodCategory(defaultCategory);
+      log("默认数据插入情况22:$result2");
+      if (result == 0 && result2 == 0) {
+        // 存储默认情况
+        await cache.setDBInit(true);
+      } else {
+        throw Exception("数据插入失败${result} ${result2}");
+      }
+    } on Exception catch (e) {
+      print(e);
+    }
   }
 
 // 插入默认冰箱（如果没有）
@@ -143,17 +166,18 @@ class DatabaseHelper {
     return await db.insert(
       'fridges',
       fridge.toJson(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
+      conflictAlgorithm: ConflictAlgorithm.rollback,
     );
   }
 
 // 删除冰箱及其关联的食材（注意是提醒食材也会全部被删除）
   static Future<int> deleteFridge(String fridgeId) async {
-    final db = await getDatabase();
-// 不能删除默认冰箱isdefault或者id为1的
+    // 不能删除默认冰箱isdefault或者id为1的
     if (fridgeId == '1') {
       return 0;
     }
+    final db = await getDatabase();
+
     // 删除冰箱数据
     return await db.delete(
       'fridges',
@@ -200,7 +224,7 @@ class DatabaseHelper {
       // 转换为 FoodItem 列表
       List<FoodItem> foodItemsList =
           foodItems.map((item) => FoodItem.fromJson(item)).toList();
-
+      log("foodItemsList:${jsonEncode(foodItemsList)}");
       // 将食材列表与冰箱数据结合
       fridges.add(Fridge.fromJson(fridge, foodItemsList));
     }
@@ -310,6 +334,104 @@ class DatabaseHelper {
   }
 
 //#endregion
+
+// #region 食材分类
+// 获取所有分类
+  static Future<List<FoodCategory>> getFoodCategories() async {
+    final db = await getDatabase();
+    final foodCategories = await db.query('food_categories');
+    return foodCategories
+        .map((category) => FoodCategory.fromJson(category))
+        .toList();
+  }
+
+// 获取所有分类以及各自分类下的food信息
+  static Future<List<FoodCategory>> getFoodCategoriesWithFoods() async {
+    final db = await getDatabase();
+
+    // 获取每个分类下的食材
+    final foodCategories = await db.query('food_categories');
+    log("foodCategories:${jsonEncode(foodCategories)}");
+    List<FoodCategory> categoriesWithFoods = [];
+    for (var category in foodCategories) {
+      final foodItems = await db.query(
+        'food_items',
+        where: 'category_id = ?',
+        whereArgs: [category['id']],
+      );
+
+      // 转换为 FoodItem 列表
+      List<FoodItem> foodItemsList =
+          foodItems.map((item) => FoodItem.fromJson(item)).toList();
+
+      // 将食材列表与冰箱数据结合
+      categoriesWithFoods.add(FoodCategory.fromJson(category, foodItemsList));
+    }
+    log("categoriesWithFoods:${jsonEncode(categoriesWithFoods)}");
+
+    return categoriesWithFoods;
+  }
+
+// 添加食材分类
+  static Future<int> addFoodCategory(FoodCategory category) async {
+    final db = await getDatabase();
+    // 检查表中是否已有默认冰箱
+    if (category.isDefault == true) {
+      final defaultFridge = await db.query(
+        'food_categories',
+        where: 'isDefault = ?',
+        whereArgs: [1],
+      );
+
+      // 如果已存在默认冰箱，更新其信息
+      if (defaultFridge.isNotEmpty) {
+        return 0;
+      }
+    }
+    log("还有我？");
+    return await db.insert(
+      'food_categories',
+      category.toJson(),
+      conflictAlgorithm: ConflictAlgorithm.rollback,
+    );
+  }
+
+// 删除食材分类
+  static Future<int> deleteFoodCategory(String categoryId) async {
+    if (categoryId == '1') {
+      return 0;
+    }
+    final db = await getDatabase();
+
+    // 查询是否有对应的food使用了这个分类
+    final foodItems = await db.query(
+      'food_items',
+      where: 'category = ?',
+      whereArgs: [categoryId],
+    );
+
+    if (foodItems.isNotEmpty) {
+      return 0;
+    } else {
+      return await db.delete(
+        'food_categories',
+        where: 'id = ?',
+        whereArgs: [categoryId],
+      );
+    }
+  }
+
+// 修改食材分类
+  static Future<int> updateFoodCategory(FoodCategory category) async {
+    final db = await getDatabase();
+    return await db.update(
+      'food_categories',
+      category.toJson(),
+      where: 'id = ?',
+      whereArgs: [category.id],
+    );
+  }
+// #endregion
 
 // #region 购物清单
   // 获取购物清单和购物项
