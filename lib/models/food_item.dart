@@ -38,7 +38,7 @@ class FoodItem {
     required this.expiryDate,
     required this.storageLocation,
     this.isExpired = false,
-    this.fridgeId,
+    this.fridgeId = '1',
   }) : id = id ?? Uuid().v1();
 
   //  copyWith
@@ -51,9 +51,11 @@ class FoodItem {
     DateTime? expiryDate,
     String? storageLocation,
     bool? isExpired,
+    String? fridgeId,
   }) {
     return FoodItem(
       id: id ?? this.id,
+      fridgeId: fridgeId ?? this.fridgeId,
       name: name ?? this.name,
       category: category ?? this.category,
       quantity: quantity ?? this.quantity,
@@ -78,6 +80,7 @@ class FoodItem {
   factory FoodItem.fromJson(Map<String, dynamic> json) {
     return FoodItem(
       id: json['id'],
+      fridgeId: json['fridge_id'],
       name: json['name'],
       category: json['category'],
       quantity: json['quantity'],
@@ -92,6 +95,7 @@ class FoodItem {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
+      'fridge_id': fridgeId,
       'name': name,
       'category': category,
       'quantity': quantity,

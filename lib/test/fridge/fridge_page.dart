@@ -1,17 +1,19 @@
 import 'package:com.cherish.admin/controllers/fridge_controller.dart';
+import 'package:com.cherish.admin/main.dart';
 import 'package:com.cherish.admin/models/fridge.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-class DbTestPage extends StatefulWidget {
-  const DbTestPage({super.key});
+class FridgeTestPage extends StatefulWidget {
+  const FridgeTestPage({super.key});
 
   @override
-  State<DbTestPage> createState() => _DbTestPageState();
+  State<FridgeTestPage> createState() => _FridgeTestPageState();
 }
 
-class _DbTestPageState extends State<DbTestPage> {
+class _FridgeTestPageState extends State<FridgeTestPage> {
   @override
   void initState() {
     super.initState();
@@ -81,7 +83,21 @@ class _DbTestPageState extends State<DbTestPage> {
                       icon: const Icon(Icons.delete),
                       onPressed: () async {
                         // 删除冰箱
-                        await fridgeProvider.deleteFridge(fridge.id);
+                        int result =
+                            await fridgeProvider.deleteFridge(fridge.id);
+                        if (result == 0) {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content: Text('默认冰箱不能删除'),
+                          ));
+                        }
+                      },
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.more_horiz),
+                      onPressed: () async {
+                        // 更新食材
+                        context.push('/food_page', extra: fridge.id);
                       },
                     ),
                   ],

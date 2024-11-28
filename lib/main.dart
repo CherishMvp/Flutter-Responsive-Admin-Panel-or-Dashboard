@@ -4,7 +4,8 @@ import 'package:com.cherish.admin/constants.dart';
 import 'package:com.cherish.admin/controllers/fridge_controller.dart';
 import 'package:com.cherish.admin/controllers/menu_app_controller.dart';
 import 'package:com.cherish.admin/screens/main/main_screen.dart';
-import 'package:com.cherish.admin/test/db_test_page.dart';
+import 'package:com.cherish.admin/test/food/food_page.dart';
+import 'package:com.cherish.admin/test/fridge/fridge_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -73,11 +74,19 @@ final GoRouter _router = GoRouter(
       },
       routes: [
         GoRoute(
-          path: '/db_test',
+          path: '/fridge_page',
           builder: (context, state) {
-            return const DbTestPage();
+            return const FridgeTestPage();
           },
         ),
+        // food
+        GoRoute(
+            path: '/food_page',
+            builder: (context, state) {
+              // 传入fid
+              final fid = state.extra as String;
+              return FoodPage(fridge_id: fid);
+            })
       ],
     ),
   ],

@@ -11,7 +11,7 @@ class FridgeProvider with ChangeNotifier {
   List<Fridge> get fridges => _fridges;
 
   // 当前冰箱的食材列表
-  List<FoodItem> getFridgeItems(String fridgeId) =>
+  List<FoodItem> getFridgeFoods(String fridgeId) =>
       _fridges.firstWhere((fridge) => fridge.id == fridgeId).foodItems ?? [];
 
   FridgeProvider() {
@@ -41,9 +41,10 @@ class FridgeProvider with ChangeNotifier {
   }
 
   // 删除冰箱及其食材
-  Future<void> deleteFridge(String fridgeId) async {
-    await DatabaseHelper.deleteFridge(fridgeId);
+  Future<int> deleteFridge(String fridgeId) async {
+    int result = await DatabaseHelper.deleteFridge(fridgeId);
     await loadFridges(); // 更新列表
+    return result;
   }
 
   // 更新冰箱
@@ -55,4 +56,35 @@ class FridgeProvider with ChangeNotifier {
       notifyListeners();
     }
   }
+
+  // #region  食材
+  // 添加食材
+  Future<int> addFoodItem(FoodItem foodItem) async {
+    int result = await DatabaseHelper.addFoodItem(foodItem);
+    await loadFridges(); // 更新列表
+    return result;
+  }
+
+  // 批量添加
+  Future<int> addFoodItemBatch(List<FoodItem> foodItems) async {
+    int result = await DatabaseHelper.addFoodItemBatch(foodItems);
+    await loadFridges(); // 更新列表
+    return result;
+  }
+
+  // 更新食材
+  Future<int> updateFoodItem(FoodItem updatedFoodItem) async {
+    int result = await DatabaseHelper.updateFoodItem(updatedFoodItem); // 保存到数据库
+    await loadFridges(); // 更新列表
+    return result;
+  }
+
+  // 删除食材
+  Future<int> deleteFoodItem(String foodItemId) async {
+    int result = await DatabaseHelper.deleteFoodItem(foodItemId);
+    await loadFridges(); // 更新列表
+    return result;
+  }
+
+  // #endregion
 }

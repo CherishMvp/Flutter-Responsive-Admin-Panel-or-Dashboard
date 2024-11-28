@@ -32,7 +32,7 @@ class MyFiles extends StatelessWidget {
                       defaultPadding / (Responsive.isMobile(context) ? 2 : 1),
                 ),
               ),
-              onPressed: () => context.push('/db_test'),
+              onPressed: () => context.push('/fridge_page'),
               icon: Icon(Icons.add),
               label: Text("Add New"),
             ),

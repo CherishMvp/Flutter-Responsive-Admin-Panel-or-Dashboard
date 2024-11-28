@@ -1,11 +1,10 @@
+import 'dart:convert';
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:com.cherish.admin/models/food_item.dart';
 import 'package:com.cherish.admin/models/fridge.dart';
 import 'package:com.cherish.admin/models/shopping_list.dart';
 import 'package:com.cherish.admin/utils/local_cache.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -149,11 +148,14 @@ class DatabaseHelper {
   }
 
 // 删除冰箱及其关联的食材（注意是提醒食材也会全部被删除）
-  static Future<void> deleteFridge(String fridgeId) async {
+  static Future<int> deleteFridge(String fridgeId) async {
     final db = await getDatabase();
-
+// 不能删除默认冰箱isdefault或者id为1的
+    if (fridgeId == '1') {
+      return 0;
+    }
     // 删除冰箱数据
-    await db.delete(
+    return await db.delete(
       'fridges',
       where: 'id = ?',
       whereArgs: [fridgeId],
@@ -186,7 +188,7 @@ class DatabaseHelper {
 
     // 获取冰箱列表
     final fridgeList = await db.query('fridges');
-
+    log("fridgeList:${jsonEncode(fridgeList)}");
     List<Fridge> fridges = [];
     for (var fridge in fridgeList) {
       final foodItems = await db.query(
@@ -241,23 +243,45 @@ class DatabaseHelper {
 // #endregion
 
 // #region食材
-  /// 保存食材数据（插入或更新食材信息）
-  static Future<void> addFoodItemBatch(List<FoodItem> foodItems) async {
+
+// 根据冰箱id获取全部食材信息，默认id为"1"
+  static Future<List<FoodItem>> loadFoodsByFridgeId(String fridgeId) async {
     final db = await getDatabase();
-    for (var foodItem in foodItems) {
-      // 插入或更新食材数据
-      await db.insert(
-        'food_items',
-        foodItem.toJson(),
-        conflictAlgorithm: ConflictAlgorithm.replace, // 出现冲突则替换
-      );
+    final foodItems = await db.query(
+      'food_items',
+      where: 'fridge_id = ?',
+      whereArgs: [fridgeId],
+    );
+    return foodItems.map((item) => FoodItem.fromJson(item)).toList();
+  }
+
+  /// 保存食材数据（插入或更新食材信息）
+  static Future<int> addFoodItemBatch(List<FoodItem> foodItems) async {
+    final db = await getDatabase();
+
+    try {
+      await db.transaction((txn) async {
+        for (var foodItem in foodItems) {
+          // 插入或更新食材数据
+          await txn.insert(
+            'food_items',
+            foodItem.toJson(),
+            conflictAlgorithm: ConflictAlgorithm.replace, // 出现冲突则替换
+          );
+        }
+      });
+
+      return 1; // 全部成功
+    } catch (e) {
+      log('添加食材出错：$e');
+      return 0; // 添加失败
     }
   }
 
 // 添加食材
-  static Future<void> addFoodItem(FoodItem foodItem) async {
+  static Future<int> addFoodItem(FoodItem foodItem) async {
     final db = await getDatabase();
-    await db.insert(
+    return await db.insert(
       'food_items',
       foodItem.toJson(),
       conflictAlgorithm: ConflictAlgorithm.replace,
@@ -265,9 +289,9 @@ class DatabaseHelper {
   }
 
 // 删除食材
-  static Future<void> deleteFoodItem(String foodItemId) async {
+  static Future<int> deleteFoodItem(String foodItemId) async {
     final db = await getDatabase();
-    await db.delete(
+    return await db.delete(
       'food_items',
       where: 'id = ?',
       whereArgs: [foodItemId],
@@ -275,9 +299,9 @@ class DatabaseHelper {
   }
 
 // 修改食材
-  static Future<void> updateFoodItem(FoodItem foodItem) async {
+  static Future<int> updateFoodItem(FoodItem foodItem) async {
     final db = await getDatabase();
-    await db.update(
+    return await db.update(
       'food_items',
       foodItem.toJson(),
       where: 'id = ?',

@@ -70,7 +70,7 @@ DataRow recentFileDataRow(RecentFile fileInfo) {
               width: 30,
             ),
             ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: 150),
+              constraints: BoxConstraints(maxWidth: 100),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
                 child: Text(
