@@ -1,10 +1,13 @@
-#初始化数据模型
+# 初始化数据模型
 
-#初始化sqlite
+# 初始化sqlite
 
-#初始化provider
+# 初始化provider
 
-#sqlite默认行为介绍
+# 新增分类表和食材表相关内容
+
+# sqlite默认行为介绍
+
 ## Conflict Algorithm
 
 1. **rollback**: 当约束冲突发生时，当前事务将被立即回滚，命令将终止并返回一个错误代码 `SQLITE_CONSTRAINT`。如果没有活动事务，则此算法与 `ABORT` 相同。
