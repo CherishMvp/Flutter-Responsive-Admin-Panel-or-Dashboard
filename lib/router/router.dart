@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:com.cherish.admin/Coffee%20Shop%20App%20UI/pages/splash_screen.dart';
 import 'package:com.cherish.admin/test/index/notification_receive.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -21,7 +22,8 @@ class AppRouter {
       GoRoute(
         path: '/',
         builder: (context, state) {
-          return const MainScreen();
+          // return const MainScreen();
+          return const SplashScreen(); //coffee page
         },
         routes: [
           GoRoute(
