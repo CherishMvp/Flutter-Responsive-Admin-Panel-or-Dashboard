@@ -1,10 +1,42 @@
 // 参考链接：https://blog.csdn.net/weixin_41897680/article/details/131947231
+import 'dart:convert';
 import 'dart:developer';
 
+import 'package:com.cherish.admin/router/router.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz;
+
+/// 后台通知点击
+@pragma('vm:entry-point')
+void _onReceiveBackgroundNotification(NotificationResponse details) {
+  log("后台通知点击");
+  log("后台通知点击${details.id}:${details.input}:${details.payload}");
+  if (details.payload != null) {
+    log("后台通知点击${details.payload}");
+    // 跳转到指定页面
+    approuter.push('/notification_receive', extra: details.payload);
+  }
+  // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+  //   content: Text('添加失败'),
+  // ));
+  return null;
+}
+
+/// 前台通知点击
+@pragma('vm:entry-point')
+void _onDidReceiveNotification(NotificationResponse details) {
+  log("前台通知点击");
+  log("前台通知点击${details.id}:${details.input}:${details.payload}");
+  if (details.payload != null) {
+    log("前台通知点击${details.payload}");
+    // 跳转到指定页面
+    approuter.push('/notification_receive', extra: details.payload);
+  }
+  return null;
+}
 
 class NotificationChannels {
   static const String oneTimeChannelId = 'one_time_channel';
@@ -65,12 +97,26 @@ class NotificationHelper {
     // 15.1是DarwinInitializationSettings，旧版本好像是IOSInitializationSettings（有些例子中就是这个）
     const DarwinInitializationSettings initializationSettingsIOS =
         DarwinInitializationSettings();
+
     // 初始化
     const InitializationSettings initializationSettings =
         InitializationSettings(
             android: initializationSettingsAndroid,
             iOS: initializationSettingsIOS);
-    await _notificationsPlugin.initialize(initializationSettings);
+    await _notificationsPlugin.initialize(initializationSettings,
+        onDidReceiveBackgroundNotificationResponse:
+            _onReceiveBackgroundNotification,
+        onDidReceiveNotificationResponse: _onDidReceiveNotification);
+    // 通过点击通知启动时
+    _notificationsPlugin.getNotificationAppLaunchDetails().then((value) => {
+          log("getNotificationAppLaunchDetails:$value"),
+          if (value!.didNotificationLaunchApp)
+            {
+              // 跳转到指定页面
+              approuter.push('/notification_receive',
+                  extra: value.notificationResponse?.payload)
+            }
+        });
   }
 
   /// 权限申请
@@ -98,7 +144,10 @@ class NotificationHelper {
 
   ///  一次性普通通知
   Future<void> showNotification(
-      {int id = 1, required String title, required String body}) async {
+      {int id = 1,
+      String payload = "点击通知后的附带信息",
+      required String title,
+      required String body}) async {
     // 安卓的通知
     // 'your channel id'：用于指定通知通道的ID。
     // 'your channel name'：用于指定通知通道的名称。
@@ -125,11 +174,12 @@ class NotificationHelper {
     const NotificationDetails platformChannelSpecifics = NotificationDetails(
         android: androidNotificationDetails, iOS: iosNotificationDetails);
 
-    // 发起一个通知
+    // 发起一个通知.payload是通知的附加信息，比如点击通知后打开的页面
     await _notificationsPlugin.show(
       id,
       title,
       body,
+      payload: payload,
       platformChannelSpecifics,
     );
   }
