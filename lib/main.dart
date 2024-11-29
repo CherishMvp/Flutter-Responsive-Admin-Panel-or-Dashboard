@@ -6,6 +6,7 @@ import 'package:com.cherish.admin/controllers/fridge_controller.dart';
 import 'package:com.cherish.admin/controllers/menu_app_controller.dart';
 import 'package:com.cherish.admin/screens/main/main_screen.dart';
 import 'package:com.cherish.admin/test/food/category_food_detail.dart';
+import 'package:com.cherish.admin/test/food/expire_notification.dart';
 import 'package:com.cherish.admin/test/food/food_page.dart';
 import 'package:com.cherish.admin/test/fridge/category_page.dart';
 import 'package:com.cherish.admin/test/fridge/fridge_page.dart';
@@ -16,9 +17,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
 
+import 'utils/local_notification_service.dart';
+
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   if (Platform.isWindows) {
-    WidgetsFlutterBinding.ensureInitialized();
     // Must add this line.
     await windowManager.ensureInitialized();
 
@@ -34,6 +37,9 @@ void main() async {
       await windowManager.focus();
     });
   }
+  // 初始化通知帮助类
+  NotificationHelper notificationHelper = NotificationHelper();
+  await notificationHelper.initialize();
   runApp(
     MultiProvider(
       providers: [
@@ -93,6 +99,13 @@ final GoRouter _router = GoRouter(
           path: '/category_page',
           builder: (context, state) {
             return const CategoryPage();
+          },
+        ),
+        // ExpireNotification
+        GoRoute(
+          path: '/notification_page',
+          builder: (context, state) {
+            return const ExpireNotification();
           },
         ),
         GoRoute(

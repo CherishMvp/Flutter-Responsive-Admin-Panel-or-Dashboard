@@ -1,3 +1,4 @@
+import 'package:com.cherish.admin/utils/local_notification_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -10,6 +11,19 @@ class TestPage extends StatefulWidget {
 }
 
 class _TestPageState extends State<TestPage> {
+// 申请通知权限
+  Future<void> requestNotificationPermission() async {
+    if (!kIsWeb) {
+      await NotificationHelper().requestNotificationPermissions();
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    requestNotificationPermission();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,6 +41,13 @@ class _TestPageState extends State<TestPage> {
             title: const Text("分类页面"),
             onTap: () {
               context.push('/category_page');
+            },
+          ),
+          // 通知页面
+          ListTile(
+            title: const Text("通知页面"),
+            onTap: () {
+              context.push('/notification_page');
             },
           ),
         ]));

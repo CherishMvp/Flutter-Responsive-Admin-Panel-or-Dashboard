@@ -1,5 +1,6 @@
 import 'package:uuid/uuid.dart';
 
+// # region 食材基础信息
 /// 食材基础信息
 class FoodItem {
   /// 唯一标识符，方便管理
@@ -132,8 +133,9 @@ class FoodItem {
     };
   }
 }
+// #endregion
 
-/// 食材类别。分类暂时不考虑与食材进行联表。用户自己创建分类
+// #region 食材类别。分类暂时不考虑与食材进行联表。用户自己创建分类
 class FoodCategory {
   final String id;
   final String name;
@@ -190,7 +192,6 @@ class FoodCategory {
 
   factory FoodCategory.fromJson(Map<String, dynamic> json,
       [List<FoodItem>? foodItemList]) {
-    print("foodItems: $foodItemList");
     return FoodCategory(
       id: json['id'],
       name: json['name'],
@@ -203,6 +204,40 @@ class FoodCategory {
     );
   }
 }
+// #endregion
+
+// #region  食材过期通知
+class ExpiryNotification {
+  final String foodItemId; // 食材ID
+  final String message; // 提醒信息
+  final DateTime notificationTime; // 提醒时间
+
+  ExpiryNotification({
+    required this.foodItemId,
+    required this.message,
+    required this.notificationTime,
+  });
+
+  // 从JSON构建通知对象
+  factory ExpiryNotification.fromJson(Map<String, dynamic> json) {
+    return ExpiryNotification(
+      foodItemId: json['foodItemId'],
+      message: json['message'],
+      notificationTime: DateTime.parse(json['notificationTime']),
+    );
+  }
+
+  // 转换成JSON格式
+  Map<String, dynamic> toJson() {
+    return {
+      'foodItemId': foodItemId,
+      'message': message,
+      'notificationTime': notificationTime.toIso8601String(),
+    };
+  }
+}
+
+// #endregion
 
 List<FoodItem> foodItems = [
   FoodItem(

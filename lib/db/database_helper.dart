@@ -56,8 +56,6 @@ class DatabaseHelper {
   static _handleDBUpgrade(Database db, int oldVersion, int newVersion) async {
     if (newVersion > oldVersion) {
       print("数据库升级，准备更新数据");
-      await db.execute(
-          ''' ALTER TABLE food_items ADD COLUMN category_id TEXT DEFAULT '1' ''');
     }
   }
 
@@ -177,13 +175,23 @@ class DatabaseHelper {
       return 0;
     }
     final db = await getDatabase();
-
-    // 删除冰箱数据
-    return await db.delete(
-      'fridges',
-      where: 'id = ?',
+    // 查询是否有对应的food使用了这个分类
+    final foodItems = await db.query(
+      'food_items',
+      where: 'fridge_id = ?',
       whereArgs: [fridgeId],
     );
+
+    if (foodItems.isNotEmpty) {
+      return 0;
+    } else {
+      // 删除冰箱数据
+      return await db.delete(
+        'fridges',
+        where: 'id = ?',
+        whereArgs: [fridgeId],
+      );
+    }
 
     // 可选：如果使用了外键，删除冰箱时可以自动删除相关的食材数据
     // await db.delete(
@@ -212,7 +220,6 @@ class DatabaseHelper {
 
     // 获取冰箱列表
     final fridgeList = await db.query('fridges');
-    log("fridgeList:${jsonEncode(fridgeList)}");
     List<Fridge> fridges = [];
     for (var fridge in fridgeList) {
       final foodItems = await db.query(
@@ -224,7 +231,6 @@ class DatabaseHelper {
       // 转换为 FoodItem 列表
       List<FoodItem> foodItemsList =
           foodItems.map((item) => FoodItem.fromJson(item)).toList();
-      log("foodItemsList:${jsonEncode(foodItemsList)}");
       // 将食材列表与冰箱数据结合
       fridges.add(Fridge.fromJson(fridge, foodItemsList));
     }
@@ -351,7 +357,6 @@ class DatabaseHelper {
 
     // 获取每个分类下的食材
     final foodCategories = await db.query('food_categories');
-    log("foodCategories:${jsonEncode(foodCategories)}");
     List<FoodCategory> categoriesWithFoods = [];
     for (var category in foodCategories) {
       final foodItems = await db.query(
@@ -367,7 +372,6 @@ class DatabaseHelper {
       // 将食材列表与冰箱数据结合
       categoriesWithFoods.add(FoodCategory.fromJson(category, foodItemsList));
     }
-    log("categoriesWithFoods:${jsonEncode(categoriesWithFoods)}");
 
     return categoriesWithFoods;
   }
@@ -406,7 +410,7 @@ class DatabaseHelper {
     // 查询是否有对应的food使用了这个分类
     final foodItems = await db.query(
       'food_items',
-      where: 'category = ?',
+      where: 'category_id = ?',
       whereArgs: [categoryId],
     );
 

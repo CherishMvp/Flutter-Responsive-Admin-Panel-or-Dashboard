@@ -82,34 +82,3 @@ class Fridge {
     };
   }
 }
-
-///  冰箱的操作与通知
-class ExpiryNotification {
-  final String foodItemId; // 食材ID
-  final String message; // 提醒信息
-  final DateTime notificationTime; // 提醒时间
-
-  ExpiryNotification({
-    required this.foodItemId,
-    required this.message,
-    required this.notificationTime,
-  });
-
-  // 从JSON构建通知对象
-  factory ExpiryNotification.fromJson(Map<String, dynamic> json) {
-    return ExpiryNotification(
-      foodItemId: json['foodItemId'],
-      message: json['message'],
-      notificationTime: DateTime.parse(json['notificationTime']),
-    );
-  }
-
-  // 转换成JSON格式
-  Map<String, dynamic> toJson() {
-    return {
-      'foodItemId': foodItemId,
-      'message': message,
-      'notificationTime': notificationTime.toIso8601String(),
-    };
-  }
-}

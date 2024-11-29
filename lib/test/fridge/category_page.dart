@@ -34,7 +34,7 @@ class _CategoryPageState extends State<CategoryPage> {
             itemBuilder: (context, index) {
               final category = fridgeProvider.foodCategory[index];
               return ListTile(
-                title: Text(category.name),
+                title: Text('${category.name + '  ' + category.icon}'),
                 subtitle: Text('分类ID: ${category.id}'),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -85,7 +85,7 @@ class _CategoryPageState extends State<CategoryPage> {
                         if (result == 0) {
                           ScaffoldMessenger.of(context)
                               .showSnackBar(const SnackBar(
-                            content: Text('默认分类不能删除'),
+                            content: Text('分类删除失败，存在食材或为默认分类'),
                           ));
                         }
                       },

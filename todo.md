@@ -8,6 +8,10 @@
 
 # sqlite默认行为介绍
 
+# 本地过期通知参考
+- [掘金-ios](https://juejin.cn/post/7106785152621248543)
+- [csdn-android](https://blog.csdn.net/weixin_41897680/article/details/131947231)
+
 ## Conflict Algorithm
 
 1. **rollback**: 当约束冲突发生时，当前事务将被立即回滚，命令将终止并返回一个错误代码 `SQLITE_CONSTRAINT`。如果没有活动事务，则此算法与 `ABORT` 相同。

@@ -88,7 +88,7 @@ class _FridgeTestPageState extends State<FridgeTestPage> {
                         if (result == 0) {
                           ScaffoldMessenger.of(context)
                               .showSnackBar(const SnackBar(
-                            content: Text('默认冰箱不能删除'),
+                            content: Text('冰箱删除失败，存在食材或为默认冰箱'),
                           ));
                         }
                       },
