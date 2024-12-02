@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
@@ -22,6 +24,21 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSUserNotificationAlertBody</key>
+	<string>我们希望能够在您允许的情况下发送通知。</string>
+	<key>NSUserNotificationAlertIdentifier</key>
+	<string>我们需要您的许可来发送通知</string>
+	<key>NSUserNotificationAlertTitle</key>
+	<string>请求通知权限</string>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>We use notifications to remind you when your food items are about to expire.</string>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -41,25 +58,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>CADisableMinimumFrameDurationOnPhone</key>
-	<true/>
-	<key>UIApplicationSupportsIndirectInputEvents</key>
-	<true/>
-	<!-- 新增的一些权限声明 -->
-    <key>UIBackgroundModes</key>
-<array>
-  <string>fetch</string>
-  <string>remote-notification</string>
-</array>
-<key>NSUserTrackingUsageDescription</key>
-<string>We use notifications to remind you when your food items are about to expire.</string>
-<key>NSUserNotificationAlertIdentifier</key>
-<string>我们需要您的许可来发送通知</string>
-<key>NSUserNotificationAlertTitle</key>
-<string>请求通知权限</string>
-<key>NSUserNotificationAlertBody</key>
-<string>我们希望能够在您允许的情况下发送通知。</string>
-
-
 </dict>
 </plist>

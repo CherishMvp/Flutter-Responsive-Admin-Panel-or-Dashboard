@@ -32,7 +32,7 @@ class DatabaseHelper {
         await db.execute(
             ''' CREATE TABLE fridges( id TEXT PRIMARY KEY, name TEXT, isDefault INTEGER, createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, updatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ) ''');
         await db.execute(
-            ''' CREATE TABLE food_items( id TEXT PRIMARY KEY, fridge_id TEXT, category_id TEXT, name TEXT, category TEXT,category_id TEXT DEFAULT '1', quantity INTEGER, purchaseDate TEXT, expiryDate TEXT, storageLocation TEXT, isExpired INTEGER, createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, updatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY(fridge_id) REFERENCES fridges(id) ) ''');
+            ''' CREATE TABLE food_items( id TEXT PRIMARY KEY, fridge_id TEXT, name TEXT, category TEXT,category_id TEXT DEFAULT '1', quantity INTEGER, purchaseDate TEXT, expiryDate TEXT, storageLocation TEXT, isExpired INTEGER, createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, updatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY(fridge_id) REFERENCES fridges(id) ) ''');
         await db.execute(
             ''' CREATE TABLE food_categories( id TEXT PRIMARY KEY, name TEXT, icon TEXT, isDefault INTEGER, createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, updatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ) ''');
         await db.execute(

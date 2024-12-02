@@ -61,8 +61,18 @@ class _ExpireNotificationState extends State<ExpireNotification> {
       //打开应用设置
       final flag = await showAdaptiveDialog(
           context: context,
-          builder: (builder) => const Dialog(
-                child: Text("请打开通知权限"),
+          builder: (builder) => AlertDialog(
+                title: const Text("请打开通知权限"),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(false),
+                    child: const Text("取消"),
+                  ),
+                  ElevatedButton(
+                    onPressed: () => Navigator.of(context).pop(true),
+                    child: const Text("确定"),
+                  ),
+                ],
               ));
       if (flag != null && flag) {
         openAppSettings();
@@ -86,8 +96,18 @@ class _ExpireNotificationState extends State<ExpireNotification> {
       //打开应用设置
       final flag = await showAdaptiveDialog(
           context: context,
-          builder: (builder) => const Dialog(
-                child: Text("请打开通知权限"),
+          builder: (builder) => AlertDialog(
+                title: const Text("请打开通知权限"),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(false),
+                    child: const Text("取消"),
+                  ),
+                  ElevatedButton(
+                    onPressed: () => Navigator.of(context).pop(true),
+                    child: const Text("确定"),
+                  ),
+                ],
               ));
       if (flag != null && flag) {
         openAppSettings();
@@ -113,8 +133,18 @@ class _ExpireNotificationState extends State<ExpireNotification> {
       //打开应用设置
       final flag = await showAdaptiveDialog(
           context: context,
-          builder: (builder) => const Dialog(
-                child: Text("请打开通知权限"),
+          builder: (builder) => AlertDialog(
+                title: const Text("请打开通知权限"),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(false),
+                    child: const Text("取消"),
+                  ),
+                  ElevatedButton(
+                    onPressed: () => Navigator.of(context).pop(true),
+                    child: const Text("确定"),
+                  ),
+                ],
               ));
       if (flag != null && flag) {
         openAppSettings();

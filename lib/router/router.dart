@@ -17,7 +17,7 @@ GoRouter get approuter => AppRouter.router;
 
 class AppRouter {
   static final GoRouter router = GoRouter(
-    initialLocation: '/', // 启动时默认加载的页面
+    initialLocation: '/test_page', // 启动时默认加载的页面
     routes: [
       GoRoute(
         path: '/',

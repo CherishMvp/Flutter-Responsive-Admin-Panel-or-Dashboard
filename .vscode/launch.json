@@ -15,6 +15,14 @@
             "deviceId": "127.0.0.1:16384",
             "type": "dart"
         },
+          {
+            "name": "ios模拟器 - 15plus-ios17",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "deviceId": "7E092E65-BBAD-4316-A0F1-50E373A83EEB",
+            // "args": ["--enable-experiment=macros"]//开启实验json功能
+        },
         {
             "name": "chrome",
             "request": "launch",

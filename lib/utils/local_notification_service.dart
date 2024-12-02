@@ -1,6 +1,7 @@
 // 参考链接：https://blog.csdn.net/weixin_41897680/article/details/131947231
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:com.cherish.admin/router/router.dart';
 import 'package:flutter/material.dart';
@@ -136,9 +137,11 @@ class NotificationHelper {
       log("requestNotificationPermissions ：通知权限已授予");
       print('通知权限已授予');
     }
-    if (!await Permission.scheduleExactAlarm.isGranted ||
-        !await Permission.notification.isGranted) {
-      openAppSettings();
+    if (Platform.isAndroid) {
+      if (!await Permission.scheduleExactAlarm.isGranted ||
+          !await Permission.notification.isGranted) {
+        openAppSettings();
+      }
     }
   }
 
@@ -168,6 +171,7 @@ class NotificationHelper {
     const String darwinNotificationCategoryPlain = 'plainCategory';
     const DarwinNotificationDetails iosNotificationDetails =
         DarwinNotificationDetails(
+      presentAlert: true,
       categoryIdentifier: darwinNotificationCategoryPlain, // 通知分类
     );
     // 创建跨平台通知
@@ -182,6 +186,7 @@ class NotificationHelper {
       payload: payload,
       platformChannelSpecifics,
     );
+    log("发送完成");
   }
 
   ///  周期性通知
