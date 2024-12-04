@@ -31,7 +31,7 @@ class RecentFiles extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               child: DataTable(
                 columnSpacing: defaultPadding,
-                horizontalMargin: 0,
+                horizontalMargin: 15,
                 // minWidth: 600,
                 columns: [
                   DataColumn(
@@ -70,7 +70,7 @@ DataRow recentFileDataRow(RecentFile fileInfo) {
               width: 30,
             ),
             ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: 100),
+              constraints: BoxConstraints(maxWidth: 140),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
                 child: Text(

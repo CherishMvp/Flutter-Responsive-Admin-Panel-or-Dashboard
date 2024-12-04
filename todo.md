@@ -8,6 +8,12 @@
 
 # sqlite默认行为介绍
 
+# 基本的crud都完成的差不多，接下来是UI层面
+- crud包括
+ - 食材
+ - 分类
+ - 冰箱
+
 # 本地过期通知参考
 - [掘金-ios](https://juejin.cn/post/7106785152621248543)
 - [csdn-android](https://blog.csdn.net/weixin_41897680/article/details/131947231)
