@@ -28,7 +28,11 @@ class Header extends StatelessWidget {
                 color: Colors.transparent,
                 borderRadius: const BorderRadius.all(Radius.circular(10)),
               ),
-              child: SvgPicture.asset("assets/icons/Search.svg"),
+              child: SvgPicture.asset(
+                "assets/icons/menu_dashboard.svg",
+                width: 28,
+                height: 28,
+              ),
             ),
           ),
         if (!Responsive.isMobile(context))
@@ -38,7 +42,8 @@ class Header extends StatelessWidget {
           ),
         if (!Responsive.isMobile(context))
           Spacer(flex: Responsive.isDesktop(context) ? 2 : 1),
-        Expanded(child: SearchField()),
+        // Expanded(child: SearchField()),
+        Expanded(child: mySearchBar()),
         ProfileCard()
       ],
     );
@@ -56,12 +61,12 @@ class ProfileCard extends StatelessWidget {
       margin: EdgeInsets.only(left: defaultPadding),
       padding: EdgeInsets.symmetric(
         horizontal: defaultPadding,
-        vertical: defaultPadding / 4,
+        vertical: 8,
       ),
       decoration: BoxDecoration(
         color: secondaryColor,
         borderRadius: const BorderRadius.all(Radius.circular(10)),
-        border: Border.all(color: Colors.white10),
+        // border: Border.all(color: Colors.white10),
       ),
       child: Row(
         children: [
@@ -114,4 +119,29 @@ class SearchField extends StatelessWidget {
       ),
     );
   }
+}
+
+Padding mySearchBar() {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 22),
+    child: TextField(
+      decoration: InputDecoration(
+        filled: true,
+        prefixIcon: const Icon(Icons.search),
+        // fillColor: Colors.white,
+        fillColor: secondaryColor,
+        border: InputBorder.none,
+        hintText: "Search",
+        hintStyle: const TextStyle(
+          color: Colors.grey,
+        ),
+        enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide.none),
+        focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide.none),
+      ),
+    ),
+  );
 }

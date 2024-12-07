@@ -22,7 +22,7 @@ class _NotificationReceiveState extends State<NotificationReceive> {
             child: Column(
               children: [
                 SizedBox(
-                  height: 25,
+                  height: 65,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
