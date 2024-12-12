@@ -1,0 +1,91 @@
+import 'package:com.cherish.admin/models/food_item.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
+
+import '../../../constants.dart';
+
+class RecentFoods extends StatelessWidget {
+  const RecentFoods({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(defaultPadding),
+      decoration: BoxDecoration(
+        color: secondaryColor,
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Recent Files",
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          SizedBox(
+            width: double.infinity,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: DataTable(
+                columnSpacing: defaultPadding,
+                horizontalMargin: 15,
+                // minWidth: 600,
+                columns: [
+                  DataColumn(
+                    label: Text("Food Name"),
+                    tooltip: "Food Name",
+                  ),
+                  DataColumn(
+                    label: Text("Purchase Date"),
+                  ),
+                  DataColumn(
+                    label: Text("Expiry Date"),
+                  ),
+                ],
+                rows: List.generate(
+                  foodItems.length,
+                  (index) => recentFoodsDataRow(foodItems[index]),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+DataRow recentFoodsDataRow(FoodItem fileInfo) {
+  return DataRow(
+    cells: [
+      DataCell(
+        Row(
+          children: [
+            SvgPicture.asset(
+              'assets/icons/doc_file.svg',
+              height: 30,
+              width: 30,
+            ),
+            ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: 140),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
+                child: Text(
+                  fileInfo.name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      DataCell(Text(
+          DateFormat('yyyy-MM-dd', 'zh_CN').format(fileInfo.purchaseDate))),
+      DataCell(Text(DateFormat.yMMMEd().format(fileInfo.expiryDate))),
+    ],
+  );
+}

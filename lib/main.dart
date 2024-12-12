@@ -6,10 +6,13 @@ import 'package:com.cherish.admin/controllers/fridge_controller.dart';
 import 'package:com.cherish.admin/controllers/menu_app_controller.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
 
+import 'controllers/locale_controller.dart';
+import 'generated/l10n.dart';
 import 'router/router.dart';
 import 'utils/local_notification_service.dart';
 
@@ -55,9 +58,30 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    LocaleController localeChangeNotifier = LocaleController();
+
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Admin Panel',
+      title: S.of(context).name,
+      // 多语言配置
+      locale: localeChangeNotifier.locale,
+      localeResolutionCallback:
+          (Locale? locale, Iterable<Locale> supportedLocales) {
+        if (localeChangeNotifier.locale == null) {
+          localeChangeNotifier.init(
+              supportedLocales.contains(locale!) ? locale : const Locale("en"));
+        }
+        return localeChangeNotifier.locale;
+      },
+      // supportedLocales: S.delegate.supportedLocales,
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        S.delegate,
+      ],
+      supportedLocales: S.delegate.supportedLocales,
+
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: bgColor,
         textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme)
