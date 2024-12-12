@@ -1,7 +1,10 @@
+import 'package:com.cherish.admin/controllers/fridge_controller.dart';
+import 'package:com.cherish.admin/generated/l10n.dart';
 import 'package:com.cherish.admin/models/food_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 
@@ -22,35 +25,52 @@ class RecentFoods extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Recent Files",
+            S.of(context).recent_food,
             style: Theme.of(context).textTheme.titleMedium,
           ),
           SizedBox(
             width: double.infinity,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: DataTable(
-                columnSpacing: defaultPadding,
-                horizontalMargin: 15,
-                // minWidth: 600,
-                columns: [
-                  DataColumn(
-                    label: Text("Food Name"),
-                    tooltip: "Food Name",
+            child: Provider.of<FridgeProvider>(context)
+                    .getFridgeFoods('1')
+                    .isNotEmpty
+                ? SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: DataTable(
+                      columnSpacing: defaultPadding,
+                      horizontalMargin: 15,
+                      // minWidth: 600,
+                      columns: [
+                        DataColumn(
+                          label: Text("Food Name"),
+                          tooltip: "Food Name",
+                        ),
+                        DataColumn(
+                          label: Text("Purchase Date"),
+                        ),
+                        DataColumn(
+                          label: Text("Expiry Date"),
+                        ),
+                      ],
+                      rows: List.generate(
+                        context
+                            .read<FridgeProvider>()
+                            .getFridgeFoods('1')
+                            .length,
+                        (index) => recentFoodsDataRow(context
+                            .read<FridgeProvider>()
+                            .getFridgeFoods('1')[index]),
+                      ),
+                    ))
+                : Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20.0),
+                    child: Center(
+                      child: SvgPicture.asset(
+                        width: 150,
+                        height: 150,
+                        'assets/icons/undraw_empty_re_opql.svg',
+                      ),
+                    ),
                   ),
-                  DataColumn(
-                    label: Text("Purchase Date"),
-                  ),
-                  DataColumn(
-                    label: Text("Expiry Date"),
-                  ),
-                ],
-                rows: List.generate(
-                  foodItems.length,
-                  (index) => recentFoodsDataRow(foodItems[index]),
-                ),
-              ),
-            ),
           ),
         ],
       ),
@@ -85,7 +105,8 @@ DataRow recentFoodsDataRow(FoodItem fileInfo) {
       ),
       DataCell(Text(
           DateFormat('yyyy-MM-dd', 'zh_CN').format(fileInfo.purchaseDate))),
-      DataCell(Text(DateFormat.yMMMEd().format(fileInfo.expiryDate))),
+      DataCell(
+          Text(DateFormat('yyyy-MM-dd', 'zh_CN').format(fileInfo.expiryDate))),
     ],
   );
 }

@@ -62,7 +62,7 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      title: S.of(context).name,
+      // title: S.of(context).name,
       // 多语言配置
       locale: localeChangeNotifier.locale,
       localeResolutionCallback:

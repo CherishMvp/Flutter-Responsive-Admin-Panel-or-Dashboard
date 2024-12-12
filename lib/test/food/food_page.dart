@@ -103,7 +103,9 @@ class _FoodPageState extends State<FoodPage> {
         onPressed: () async {
           // 添加新食材
           final fridge = FoodItem(
-            name: '${widget.fridge_id.substring(0, 4)}_${RandomText.word()}',
+            name: widget.fridge_id != '1'
+                ? '${widget.fridge_id.substring(0, 4)}_${RandomText.word()}'
+                : '1_${RandomText.word()}',
             category: 'Fruit',
             quantity: 1,
             fridgeId: widget.fridge_id, //注意带上冰箱ID，从上一级传来。默认为1

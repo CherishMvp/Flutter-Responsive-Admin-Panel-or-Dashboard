@@ -5,6 +5,9 @@ class LocaleController extends ChangeNotifier {
 
   Locale? get locale => _locale;
 
+  LocaleController() {
+    init(Locale('zh', 'CN'));
+  }
   void init(Locale locale) {
     _locale = locale;
   }

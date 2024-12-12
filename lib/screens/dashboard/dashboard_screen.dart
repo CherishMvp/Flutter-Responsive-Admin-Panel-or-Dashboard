@@ -1,5 +1,6 @@
 import 'package:com.cherish.admin/responsive.dart';
 import 'package:com.cherish.admin/screens/dashboard/components/my_fields.dart';
+import 'package:com.cherish.admin/screens/dashboard/components/my_fridges.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants.dart';
@@ -30,7 +31,8 @@ class DashboardScreen extends StatelessWidget {
                   flex: 5,
                   child: Column(
                     children: [
-                      MyFiles(),
+                      // MyFiles(),
+                      MyFridge(),
                       SizedBox(height: defaultPadding),
                       // RecentFiles(),
                       RecentFoods(),

@@ -1,3 +1,4 @@
+import 'package:com.cherish.admin/controllers/fridge_controller.dart';
 import 'package:com.cherish.admin/controllers/menu_app_controller.dart';
 import 'package:com.cherish.admin/responsive.dart';
 import 'package:flutter/material.dart';
@@ -124,24 +125,29 @@ class SearchField extends StatelessWidget {
 Padding mySearchBar() {
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 22),
-    child: TextField(
-      decoration: InputDecoration(
-        filled: true,
-        prefixIcon: const Icon(Icons.search),
-        // fillColor: Colors.white,
-        fillColor: secondaryColor,
-        border: InputBorder.none,
-        hintText: "Search",
-        hintStyle: const TextStyle(
-          color: Colors.grey,
+    child: Consumer<FridgeProvider>(builder: (context, searchProvider, child) {
+      return TextField(
+        onChanged: (value) {
+          searchProvider.search(value);
+        },
+        decoration: InputDecoration(
+          filled: true,
+          prefixIcon: const Icon(Icons.search),
+          // fillColor: Colors.white,
+          fillColor: secondaryColor,
+          border: InputBorder.none,
+          hintText: "Search",
+          hintStyle: const TextStyle(
+            color: Colors.grey,
+          ),
+          enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide.none),
+          focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide.none),
         ),
-        enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide.none),
-        focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide.none),
-      ),
-    ),
+      );
+    }),
   );
 }

@@ -59,6 +59,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Recent Foods`
+  String get recent_food {
+    return Intl.message(
+      'Recent Foods',
+      name: 'recent_food',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

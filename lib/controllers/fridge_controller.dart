@@ -37,6 +37,14 @@ class FridgeProvider with ChangeNotifier {
     print("FridgeProvider initialized");
   }
 
+// 搜索内容
+  search(String query) {
+    _fridges = _fridges.where((fridge) {
+      return fridge.name.toLowerCase().contains(query.toLowerCase());
+    }).toList();
+    notifyListeners();
+  }
+
   // 加载所有冰箱和食材数据
   Future<void> loadFridges() async {
     log("provider加载冰箱和食材数据");
