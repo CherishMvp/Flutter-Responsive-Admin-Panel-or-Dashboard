@@ -1,8 +1,8 @@
 import 'dart:developer';
 
-import 'package:com.cherish.admin/db/database_helper.dart';
-import 'package:com.cherish.admin/models/food_item.dart';
-import 'package:com.cherish.admin/models/fridge.dart';
+import 'package:com.cherish.zwt.fridge/db/database_helper.dart';
+import 'package:com.cherish.zwt.fridge/models/food_item.dart';
+import 'package:com.cherish.zwt.fridge/models/fridge.dart';
 import 'package:flutter/material.dart';
 
 class FridgeProvider with ChangeNotifier {
@@ -11,8 +11,11 @@ class FridgeProvider with ChangeNotifier {
   List<Fridge> get fridges => _fridges;
 
   /// 指定冰箱的食材列表
-  List<FoodItem> getFridgeFoods(String fridgeId) =>
-      _fridges.firstWhere((fridge) => fridge.id == fridgeId).foodItems ?? [];
+  List<FoodItem> getFridgeFoods(String fridgeId) {
+    if (_fridges.isEmpty) return [];
+    return _fridges.firstWhere((fridge) => fridge.id == fridgeId).foodItems ??
+        [];
+  }
 
   /// 指定分类下的食材列表
   List<FoodItem> getFoodCategoryFoods(String categoryId) =>

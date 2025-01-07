@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:com.cherish.admin/models/food_item.dart';
-import 'package:com.cherish.admin/models/fridge.dart';
-import 'package:com.cherish.admin/models/shopping_list.dart';
-import 'package:com.cherish.admin/utils/local_cache.dart';
+import 'package:com.cherish.zwt.fridge/models/food_item.dart';
+import 'package:com.cherish.zwt.fridge/models/fridge.dart';
+import 'package:com.cherish.zwt.fridge/models/shopping_list.dart';
+import 'package:com.cherish.zwt.fridge/utils/local_cache.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 

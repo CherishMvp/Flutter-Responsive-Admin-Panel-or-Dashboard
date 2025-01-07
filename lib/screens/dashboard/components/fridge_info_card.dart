@@ -1,5 +1,5 @@
-import 'package:com.cherish.admin/models/fridge.dart';
-import 'package:com.cherish.admin/models/my_files.dart';
+import 'package:com.cherish.zwt.fridge/models/fridge.dart';
+import 'package:com.cherish.zwt.fridge/models/my_files.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 

@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:com.cherish.admin/utils/local_notification_service.dart';
+import 'package:com.cherish.zwt.fridge/utils/local_notification_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';

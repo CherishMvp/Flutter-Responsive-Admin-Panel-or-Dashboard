@@ -1,4 +1,4 @@
-package com.cherish.admin.com_cherish_admin
+package com.cherish.zwt.fridge.com_cherish_admin
 
 import io.flutter.embedding.android.FlutterActivity
 

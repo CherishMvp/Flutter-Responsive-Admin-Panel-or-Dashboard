@@ -1,6 +1,6 @@
-import 'package:com.cherish.admin/responsive.dart';
-import 'package:com.cherish.admin/screens/dashboard/components/my_fields.dart';
-import 'package:com.cherish.admin/screens/dashboard/components/my_fridges.dart';
+import 'package:com.cherish.zwt.fridge/responsive.dart';
+import 'package:com.cherish.zwt.fridge/screens/dashboard/components/my_fields.dart';
+import 'package:com.cherish.zwt.fridge/screens/dashboard/components/my_fridges.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants.dart';

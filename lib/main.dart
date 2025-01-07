@@ -1,9 +1,9 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:com.cherish.admin/constants.dart';
-import 'package:com.cherish.admin/controllers/fridge_controller.dart';
-import 'package:com.cherish.admin/controllers/menu_app_controller.dart';
+import 'package:com.cherish.zwt.fridge/constants.dart';
+import 'package:com.cherish.zwt.fridge/controllers/fridge_controller.dart';
+import 'package:com.cherish.zwt.fridge/controllers/menu_app_controller.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';

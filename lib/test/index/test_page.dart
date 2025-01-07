@@ -1,4 +1,4 @@
-import 'package:com.cherish.admin/utils/local_notification_service.dart';
+import 'package:com.cherish.zwt.fridge/utils/local_notification_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';

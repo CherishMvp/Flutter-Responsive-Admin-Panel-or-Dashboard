@@ -1,7 +1,7 @@
-import 'package:com.cherish.admin/screens/main/main_screen.dart';
-import 'package:com.cherish.admin/test/food/expire_notification.dart';
-import 'package:com.cherish.admin/test/fridge/category_page.dart';
-import 'package:com.cherish.admin/test/fridge/fridge_page.dart';
+import 'package:com.cherish.zwt.fridge/screens/main/main_screen.dart';
+import 'package:com.cherish.zwt.fridge/test/food/expire_notification.dart';
+import 'package:com.cherish.zwt.fridge/test/fridge/category_page.dart';
+import 'package:com.cherish.zwt.fridge/test/fridge/fridge_page.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import '../pages/home_screen.dart';

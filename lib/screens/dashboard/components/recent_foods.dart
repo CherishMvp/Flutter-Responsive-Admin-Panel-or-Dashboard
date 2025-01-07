@@ -1,6 +1,6 @@
-import 'package:com.cherish.admin/controllers/fridge_controller.dart';
-import 'package:com.cherish.admin/generated/l10n.dart';
-import 'package:com.cherish.admin/models/food_item.dart';
+import 'package:com.cherish.zwt.fridge/controllers/fridge_controller.dart';
+import 'package:com.cherish.zwt.fridge/generated/l10n.dart';
+import 'package:com.cherish.zwt.fridge/models/food_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';

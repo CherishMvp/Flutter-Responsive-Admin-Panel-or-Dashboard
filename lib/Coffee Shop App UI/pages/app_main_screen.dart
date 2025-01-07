@@ -1,4 +1,4 @@
-import 'package:com.cherish.admin/constants.dart';
+import 'package:com.cherish.zwt.fridge/constants.dart';
 import 'package:flutter/material.dart';
 import '../colors.dart';
 import '../models/icon_model.dart';

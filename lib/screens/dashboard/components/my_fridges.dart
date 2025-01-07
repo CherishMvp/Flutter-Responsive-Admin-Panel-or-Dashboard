@@ -1,8 +1,8 @@
-import 'package:com.cherish.admin/controllers/fridge_controller.dart';
-import 'package:com.cherish.admin/main.dart';
-import 'package:com.cherish.admin/models/my_files.dart';
-import 'package:com.cherish.admin/responsive.dart';
-import 'package:com.cherish.admin/test/food/food_page.dart';
+import 'package:com.cherish.zwt.fridge/controllers/fridge_controller.dart';
+import 'package:com.cherish.zwt.fridge/main.dart';
+import 'package:com.cherish.zwt.fridge/models/my_files.dart';
+import 'package:com.cherish.zwt.fridge/responsive.dart';
+import 'package:com.cherish.zwt.fridge/test/food/food_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';

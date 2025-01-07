@@ -1,6 +1,6 @@
-import 'package:com.cherish.admin/controllers/fridge_controller.dart';
-import 'package:com.cherish.admin/main.dart';
-import 'package:com.cherish.admin/models/fridge.dart';
+import 'package:com.cherish.zwt.fridge/controllers/fridge_controller.dart';
+import 'package:com.cherish.zwt.fridge/main.dart';
+import 'package:com.cherish.zwt.fridge/models/fridge.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';

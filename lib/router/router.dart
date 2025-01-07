@@ -1,16 +1,16 @@
 import 'dart:developer';
 
-import 'package:com.cherish.admin/Coffee%20Shop%20App%20UI/pages/splash_screen.dart';
-import 'package:com.cherish.admin/test/index/notification_receive.dart';
+import 'package:com.cherish.zwt.fridge/Coffee%20Shop%20App%20UI/pages/splash_screen.dart';
+import 'package:com.cherish.zwt.fridge/test/index/notification_receive.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:com.cherish.admin/screens/main/main_screen.dart';
-import 'package:com.cherish.admin/test/food/category_food_detail.dart';
-import 'package:com.cherish.admin/test/food/expire_notification.dart';
-import 'package:com.cherish.admin/test/food/food_page.dart';
-import 'package:com.cherish.admin/test/fridge/category_page.dart';
-import 'package:com.cherish.admin/test/fridge/fridge_page.dart';
-import 'package:com.cherish.admin/test/index/test_page.dart';
+import 'package:com.cherish.zwt.fridge/screens/main/main_screen.dart';
+import 'package:com.cherish.zwt.fridge/test/food/category_food_detail.dart';
+import 'package:com.cherish.zwt.fridge/test/food/expire_notification.dart';
+import 'package:com.cherish.zwt.fridge/test/food/food_page.dart';
+import 'package:com.cherish.zwt.fridge/test/fridge/category_page.dart';
+import 'package:com.cherish.zwt.fridge/test/fridge/fridge_page.dart';
+import 'package:com.cherish.zwt.fridge/test/index/test_page.dart';
 import 'package:go_router/go_router.dart';
 
 GoRouter get approuter => AppRouter.router;
