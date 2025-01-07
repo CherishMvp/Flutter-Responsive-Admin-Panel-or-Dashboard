@@ -1,4 +1,5 @@
 import 'package:com.cherish.zwt.fridge/screens/main/main_screen.dart';
+import 'package:com.cherish.zwt.fridge/test/bar_chart/bar_chart.dart';
 import 'package:com.cherish.zwt.fridge/test/food/expire_notification.dart';
 import 'package:com.cherish.zwt.fridge/test/fridge/category_page.dart';
 import 'package:com.cherish.zwt.fridge/test/fridge/fridge_page.dart';
@@ -34,9 +35,13 @@ final menu = [
     'icon': Iconsax.heart,
     'destination': const FridgeTestPage(),
   },
+  // {
+  //   'icon': Iconsax.shopping_bag,
+  //   'destination': const CategoryPage(),
+  // },
   {
-    'icon': Iconsax.shopping_bag,
-    'destination': const CategoryPage(),
+    'icon': Iconsax.chart,
+    'destination': const MyBarChart(),
   },
   {
     'icon': Iconsax.notification,
